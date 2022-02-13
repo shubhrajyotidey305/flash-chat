@@ -60,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ),
                 AnimatedTextKit(
                   animatedTexts: [
-                    TyperAnimatedText(
+                    WavyAnimatedText(
                       'Flash Chat',
                       textStyle: const TextStyle(
                         fontSize: 45.0,
