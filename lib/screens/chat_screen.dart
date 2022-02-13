@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/constants.dart';
-import 'welcome_screen.dart';
 
 final _fireStore = FirebaseFirestore.instance;
 late User loggedInUser;
@@ -51,11 +50,11 @@ class _ChatScreenState extends State<ChatScreen> {
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
-              icon: const Icon(Icons.close),
+              icon: const Icon(Icons.logout_outlined),
               onPressed: () {
                 //Implement logout functionality
                 _auth.signOut();
-                Navigator.popAndPushNamed(context, WelcomeScreen.id);
+                Navigator.pop(context);
               }),
         ],
         title: const Text('⚡️Chat'),
