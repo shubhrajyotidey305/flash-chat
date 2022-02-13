@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/constants.dart';
+import 'package:flutter/services.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:flash_chat/components/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final authHelper = Auth();
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
@@ -80,16 +82,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     showSpinner = true;
                   });
                   try {
-                    final user = await _auth.signInWithEmailAndPassword(
+                    await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
                     Navigator.pushNamed(context, ChatScreen.id);
                     setState(() {
                       showSpinner = false;
                     });
-                  } catch (e) {
-                    if (kDebugMode) {
-                      print(e);
-                    }
+                  } on FirebaseAuthException catch (e) {
+                    setState(() {
+                      showSpinner = false;
+                    });
+                    authHelper.showToastError(e.message.toString(), context);
                   }
                 },
               )

@@ -1,5 +1,5 @@
+import 'package:flash_chat/components/auth.dart';
 import 'package:flash_chat/screens/chat_screen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/constants.dart';
@@ -15,6 +15,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final authHelper = Auth();
   late String email;
   late String password;
   bool showSpinner = false;
@@ -78,17 +79,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       showSpinner = true;
                     });
                     try {
-                      final newUser =
-                          await _auth.createUserWithEmailAndPassword(
-                              email: email, password: password);
+                      await _auth.createUserWithEmailAndPassword(
+                          email: email, password: password);
                       Navigator.pushNamed(context, ChatScreen.id);
                       setState(() {
                         showSpinner = false;
                       });
-                    } catch (e) {
-                      if (kDebugMode) {
-                        print(e);
-                      }
+                    } on FirebaseAuthException catch (e) {
+                      setState(() {
+                        showSpinner = false;
+                      });
+                      authHelper.showToastError(e.message.toString(), context);
                     }
                   }),
             ],

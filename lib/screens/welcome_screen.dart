@@ -69,6 +69,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       speed: const Duration(milliseconds: 200),
                     ),
                   ],
+                  totalRepeatCount: 1,
                 ),
               ],
             ),
